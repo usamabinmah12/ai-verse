@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import React, { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@heroui/react";
-import logo from '../../assets/logo.jpg';
-import { useSession } from '@/lib/auth-client';
+import logo from "../../assets/logo.jpg";
+import { signOut, useSession } from "@/lib/auth-client";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,9 +13,12 @@ const Navbar = () => {
 
   const user = session?.user;
   // Auth States for assignment requirements
-  const isLoggedIn = user? true : false; 
+  const isLoggedIn = user ? true : false;
   const userRole = "user"; // user | creator | admin
+  const handleSignOut = async () => {
+    await signOut();
 
+  }
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "All Prompts", href: "/prompts" },
@@ -25,7 +28,6 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-900/80 backdrop-blur-md text-slate-100">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          
           {/* Left Side: Hamburger & Brand */}
           <div className="flex items-center gap-4">
             {/* Mobile Hamburger Toggle Button */}
@@ -38,12 +40,32 @@ const Navbar = () => {
             >
               <span className="sr-only">Open main menu</span>
               {isMenuOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                  />
                 </svg>
               )}
             </button>
@@ -66,9 +88,9 @@ const Navbar = () => {
           {/* Desktop Nav Links (Centered) */}
           <div className="hidden sm:flex sm:items-center sm:gap-6">
             {menuItems.map((item, index) => (
-              <Link 
+              <Link
                 key={index}
-                href={item.href} 
+                href={item.href}
                 className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors duration-200"
               >
                 {item.label}
@@ -76,8 +98,8 @@ const Navbar = () => {
             ))}
 
             {isLoggedIn && (
-              <Link 
-                href={`/dashboard/${userRole}`} 
+              <Link
+                href={`/dashboard/${userRole}`}
                 className="text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors duration-200"
               >
                 Dashboard
@@ -89,36 +111,41 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {!isLoggedIn ? (
               <>
-                <Link 
-                  href="/auth/signin" 
+                <Link
+                  href="/auth/signin"
                   className="hidden sm:inline-block text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
                 >
                   Login
                 </Link>
-                <Button 
-                  as={Link} 
-                  href="/auth/signup" 
+                <Button
+                  as={Link}
+                  href="/auth/signup"
                   className="bg-violet-600 text-white font-medium hover:bg-violet-500 transition-all rounded-xl text-sm h-9 px-4"
                 >
                   Register
                 </Button>
               </>
             ) : (
-              <Button 
-                className="border border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white transition-all rounded-xl text-sm h-9 px-4"
-                onClick={() => {/* Better-Auth clear session hook */}}
-              >
-                Logout
-              </Button>
+              <div className="gap-2 space-x-3.5">
+                <span >Hi , <span className="text-3xl font-bold">{user.name}</span></span>
+                <Button
+                  className="border border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500 hover:text-white transition-all rounded-xl text-sm h-9 px-4"
+                  onClick={handleSignOut}
+                >
+                  Logout
+                </Button>
+              </div>
             )}
           </div>
-
         </div>
       </div>
 
       {/* Mobile Drawer Overlay Drawer (Controlled via State) */}
       {isMenuOpen && (
-        <div className="sm:hidden bg-slate-950 border-b border-slate-800" id="mobile-menu">
+        <div
+          className="sm:hidden bg-slate-950 border-b border-slate-800"
+          id="mobile-menu"
+        >
           <div className="space-y-1 px-2 pb-4 pt-2">
             {menuItems.map((item, index) => (
               <Link
@@ -130,7 +157,7 @@ const Navbar = () => {
                 {item.label}
               </Link>
             ))}
-            
+
             {isLoggedIn && (
               <Link
                 href={`/dashboard/${userRole}`}
