@@ -5,12 +5,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from "@heroui/react";
 import logo from '../../assets/logo.jpg';
+import { useSession } from '@/lib/auth-client';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
+  const user = session?.user;
   // Auth States for assignment requirements
-  const isLoggedIn = false; 
+  const isLoggedIn = user? true : false; 
   const userRole = "user"; // user | creator | admin
 
   const menuItems = [
@@ -87,14 +90,14 @@ const Navbar = () => {
             {!isLoggedIn ? (
               <>
                 <Link 
-                  href="/signin" 
+                  href="/auth/signin" 
                   className="hidden sm:inline-block text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors"
                 >
                   Login
                 </Link>
                 <Button 
                   as={Link} 
-                  href="/signup" 
+                  href="/auth/signup" 
                   className="bg-violet-600 text-white font-medium hover:bg-violet-500 transition-all rounded-xl text-sm h-9 px-4"
                 >
                   Register
@@ -140,7 +143,7 @@ const Navbar = () => {
 
             {!isLoggedIn && (
               <Link
-                href="/signin"
+                href="/auth/signin"
                 className="block rounded-md px-3 py-2 text-base font-medium text-violet-400 hover:bg-slate-800 transition-colors pt-4 border-t border-slate-800/50"
                 onClick={() => setIsMenuOpen(false)}
               >
