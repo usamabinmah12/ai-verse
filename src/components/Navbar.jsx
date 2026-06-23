@@ -14,14 +14,15 @@ const Navbar = () => {
   const user = session?.user;
   // Auth States for assignment requirements
   const isLoggedIn = user ? true : false;
-  const userRole = "user"; // user | creator | admin
+  const userRole = user?.role; // user | creator | admin
+  console.log('User role is : ', userRole)
   const handleSignOut = async () => {
     await signOut();
 
   }
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "All Prompts", href: "/prompts" },
+    { label: "All Prompts", href: "/promts" },
   ];
 
   return (

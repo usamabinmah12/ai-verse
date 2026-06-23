@@ -10,7 +10,7 @@ export async function DashboardSidebar() {
     // Creator navigation array updated with prompt marketplace scope
     const creatorNavLinks = [
         { icon: House, href: "/dashboard/creator", label: "Home" },
-        { icon: Magnifier, href: "/dashboard/creator/my-prompts", label: "my Prompts" },
+        { icon: Magnifier, href: "/dashboard/creator/my-promts", label: "my Prompts" },
         { icon: Bell, href: "/dashboard/creator/promts/new", label: "Post A Prompt" },
         
     ];

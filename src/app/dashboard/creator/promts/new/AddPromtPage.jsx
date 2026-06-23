@@ -1,9 +1,10 @@
 "use client";
-
 import { useState } from "react";
 import { ArrowUpToLine, FileText, Sparkles, Layers, Sliders, Eye } from "@gravity-ui/icons";
+import { createPromt } from "@/lib/actions/promts";
+import { getUserSession } from "@/lib/core/session";
 
-export default function AddPromptPage() {
+export default function AddPromptPage({creatorId}) {
     // Form States
     const [formData, setFormData] = useState({
         title: "",
@@ -15,7 +16,8 @@ export default function AddPromptPage() {
         difficulty: "Beginner", 
         visibility: "Public",   
     });
-
+    const user = getUserSession();
+    console.log("user id " , user);
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -104,11 +106,12 @@ export default function AddPromptPage() {
             visibility: formData.visibility,
             thumbnail: thumbnailUrl, 
             copyCount: 0,            
-            status: "pending",       
+            status: "pending", 
+            promtId:creatorId ,     
         };
-
+        // console.log()
         console.log("Final Prompt Payload for Server:", promptSubmissionData);
-        
+        const pass = createPromt(promptSubmissionData);
         // এখানে আপনার ব্যাকএন্ড ফেচ (Fetch API) রিকোয়েস্টটি অন করতে পারেন
         alert("Prompt successfully created! (Check console for data object)");
 
@@ -116,12 +119,15 @@ export default function AddPromptPage() {
     };
 
     return (
-        <div className="max-w-3xl mx-auto p-6 my-10 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm text-zinc-900 dark:text-zinc-100">
-            <div className="mb-8 border-b border-zinc-200 dark:border-zinc-800 pb-4">
-                <h1 className="text-2xl font-bold flex items-center gap-2 text-blue-600 dark:text-blue-500">
-                    <Sparkles className="size-6" /> Create New AI Prompt
+        <div className="max-w-3xl mx-auto p-6 sm:p-8 my-10 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm text-slate-100 relative">
+            {/* Ambient background decoration */}
+            <div className="absolute top-[-10%] left-[-10%] w-[250px] h-[250px] rounded-full bg-violet-600/5 blur-[80px] pointer-events-none" />
+
+            <div className="mb-8 border-b border-slate-800/80 pb-5">
+                <h1 className="text-2xl font-black flex items-center gap-2.5 text-violet-400">
+                    <Sparkles className="size-6 text-violet-400 animate-pulse" /> Create New AI Prompt
                 </h1>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-400 mt-2 font-light">
                     Share your high-quality AI prompt with the community. Newly submitted prompts will be marked as <span className="text-amber-500 font-semibold">pending</span> until approved by an admin.
                 </p>
             </div>
@@ -130,7 +136,7 @@ export default function AddPromptPage() {
                 
                 {/* 1. Prompt Title */}
                 <div>
-                    <label className="block text-sm font-semibold mb-2">Prompt Title</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Prompt Title</label>
                     <input
                         type="text"
                         name="title"
@@ -138,13 +144,13 @@ export default function AddPromptPage() {
                         value={formData.title}
                         onChange={handleChange}
                         placeholder="e.g., Ultimate SEO Article Generator"
-                        className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                        className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm text-slate-200 placeholder-slate-650 transition-all"
                     />
                 </div>
 
                 {/* 2. Prompt Description */}
                 <div>
-                    <label className="block text-sm font-semibold mb-2">Prompt Description</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Prompt Description</label>
                     <textarea
                         name="description"
                         required
@@ -152,14 +158,14 @@ export default function AddPromptPage() {
                         value={formData.description}
                         onChange={handleChange}
                         placeholder="Explain what this prompt does and its use case..."
-                        className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm text-slate-200 placeholder-slate-650 resize-none transition-all"
                     />
                 </div>
 
                 {/* 3. Prompt Content */}
                 <div>
-                    <label className="block text-sm font-semibold mb-2 flex items-center gap-1">
-                        <FileText className="size-4" /> Prompt Content
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                        <FileText className="size-4 text-violet-400" /> Prompt Content
                     </label>
                     <textarea
                         name="content"
@@ -168,7 +174,7 @@ export default function AddPromptPage() {
                         value={formData.content}
                         onChange={handleChange}
                         placeholder="Act as an expert copywriter... [Paste your exact prompt here]"
-                        className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent font-mono text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                        className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/55 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 font-mono text-sm text-slate-200 placeholder-slate-650"
                     />
                 </div>
 
@@ -176,8 +182,8 @@ export default function AddPromptPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Category */}
                     <div>
-                        <label className="block text-sm font-semibold mb-2 flex items-center gap-1">
-                            <Layers className="size-4" /> Category
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                            <Layers className="size-4 text-violet-400" /> Category
                         </label>
                         <input
                             type="text"
@@ -186,13 +192,13 @@ export default function AddPromptPage() {
                             value={formData.category}
                             onChange={handleChange}
                             placeholder="e.g., Marketing, Coding, Writing"
-                            className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm text-slate-200 placeholder-slate-650 transition-all"
                         />
                     </div>
 
                     {/* AI Tool */}
                     <div>
-                        <label className="block text-sm font-semibold mb-2">AI Tool Name</label>
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">AI Tool Name</label>
                         <input
                             type="text"
                             name="aiTool"
@@ -200,14 +206,14 @@ export default function AddPromptPage() {
                             value={formData.aiTool}
                             onChange={handleChange}
                             placeholder="e.g., ChatGPT, Midjourney, Claude"
-                            className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm text-slate-200 placeholder-slate-650 transition-all"
                         />
                     </div>
                 </div>
 
                 {/* 4. Tags */}
                 <div>
-                    <label className="block text-sm font-semibold mb-2">Tags</label>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Tags</label>
                     <input
                         type="text"
                         name="tags"
@@ -215,7 +221,7 @@ export default function AddPromptPage() {
                         value={formData.tags}
                         onChange={handleChange}
                         placeholder="Separate with commas (e.g., seo, copywriting, blog)"
-                        className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm"
+                        className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950/50 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm text-slate-200 placeholder-slate-650 transition-all"
                     />
                 </div>
 
@@ -223,14 +229,14 @@ export default function AddPromptPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Difficulty Level */}
                     <div>
-                        <label className="block text-sm font-semibold mb-2 flex items-center gap-1">
-                            <Sliders className="size-4" /> Difficulty Level
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                            <Sliders className="size-4 text-violet-400" /> Difficulty Level
                         </label>
                         <select
                             name="difficulty"
                             value={formData.difficulty}
                             onChange={handleChange}
-                            className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-200 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm cursor-pointer"
                         >
                             <option value="Beginner">Beginner</option>
                             <option value="Intermediate">Intermediate</option>
@@ -240,14 +246,14 @@ export default function AddPromptPage() {
 
                     {/* Visibility */}
                     <div>
-                        <label className="block text-sm font-semibold mb-2 flex items-center gap-1">
-                            <Eye className="size-4" /> Visibility
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                            <Eye className="size-4 text-violet-400" /> Visibility
                         </label>
                         <select
                             name="visibility"
                             value={formData.visibility}
                             onChange={handleChange}
-                            className="w-full px-4 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-sm cursor-pointer"
+                            className="w-full px-4 py-3 rounded-xl border border-slate-800 bg-slate-950 text-slate-200 focus:border-violet-500/50 focus:outline-none focus:ring-1 focus:ring-violet-500/50 text-sm cursor-pointer"
                         >
                             <option value="Public">Public</option>
                             <option value="Private">Private (Premium)</option>
@@ -257,8 +263,8 @@ export default function AddPromptPage() {
 
                 {/* 5. Thumbnail Image Upload via ImgBB */}
                 <div>
-                    <label className="block text-sm font-semibold mb-2">Thumbnail Image</label>
-                    <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 hover:border-blue-500 transition-colors rounded-2xl p-6 flex flex-col items-center justify-center relative cursor-pointer group bg-zinc-50 dark:bg-zinc-800/50">
+                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Thumbnail Image</label>
+                    <div className="border border-dashed border-slate-800 hover:border-violet-500/40 transition-colors rounded-2xl p-6 flex flex-col items-center justify-center relative cursor-pointer group bg-slate-950/45">
                         <input
                             type="file"
                             accept="image/*"
@@ -270,24 +276,24 @@ export default function AddPromptPage() {
                                 <img
                                     src={imagePreview}
                                     alt="Thumbnail preview"
-                                    className="max-h-48 rounded-lg object-cover shadow-sm"
+                                    className="max-h-48 rounded-lg object-cover shadow-md border border-slate-800"
                                 />
-                                <p className="text-xs text-zinc-500 dark:text-zinc-400">Click or drag to replace image</p>
+                                <p className="text-xs text-slate-400">Click or drag to replace image</p>
                             </div>
                         ) : (
-                            <div className="text-center flex flex-col items-center gap-2">
-                                <div className="p-3 bg-white dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 group-hover:scale-105 transition-transform">
-                                    <ArrowUpToLine className="size-6 text-zinc-500 dark:text-zinc-400" />
+                            <div className="text-center flex flex-col items-center gap-3">
+                                <div className="p-3 bg-slate-900 rounded-xl border border-slate-800 group-hover:scale-105 transition-transform duration-255">
+                                    <ArrowUpToLine className="text-violet-400" />
                                 </div>
-                                <div className="text-sm text-zinc-600 dark:text-zinc-300">
-                                    <span className="text-blue-600 dark:text-blue-500 font-medium">Click to upload</span> or drag and drop
+                                <div>
+                                    <span className="text-violet-400 font-semibold">Click to upload</span> or drag and drop
                                 </div>
-                                <p className="text-xs text-zinc-500 dark:text-zinc-400">PNG, JPG, WEBP up to 5MB</p>
+                                <p className="text-[11px] text-slate-500">PNG, JPG, WEBP up to 5MB</p>
                             </div>
                         )}
                     </div>
                     {uploadError && (
-                        <p className="text-xs text-red-500 mt-2 font-medium">{uploadError}</p>
+                        <p className="text-xs text-rose-500 mt-2 font-semibold">{uploadError}</p>
                     )}
                 </div>
 
@@ -296,7 +302,7 @@ export default function AddPromptPage() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full md:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md transition-colors active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+                        className="w-full md:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm tracking-wide shadow-lg shadow-violet-600/15 transition-all duration-250 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none cursor-pointer"
                     >
                         {loading ? "Uploading & Submitting..." : "Submit Prompt"}
                     </button>
