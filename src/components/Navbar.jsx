@@ -118,7 +118,12 @@ const Navbar = () => {
                 >
                   Upgrade To Pro
                 </Link></div>
-            : ""}
+            : <div> <Link
+                  href="/plans"
+                  className="text-xs font-bold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 px-2 py-2 rounded-[20px] shadow-lg shadow-indigo-500/20 hover:shadow-indigo-500/30 transition-all duration-200 tracking-wide uppercase"
+                >
+                 Premium Plan
+                </Link></div>}
           {/* Right Side Actions: Auth Control Buttons */}
           <div className="flex items-center gap-4">
             {!isLoggedIn ? (
