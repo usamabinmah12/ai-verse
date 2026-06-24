@@ -8,6 +8,9 @@ export const getPromt = async () =>{
 export const getSubscriptions = async() => {
     return serverFetch('/api/subscriptions');
 }
+export const getReviews = async() => {
+    return serverFetch('/api/reviews');
+}
 export const getJobById = async (jobId) => {
     return  serverFetch(`/api/jobs/${jobId}`);
 }
