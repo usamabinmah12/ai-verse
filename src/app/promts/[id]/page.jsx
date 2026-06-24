@@ -21,7 +21,9 @@ async function getSinglePrompt(id) {
 
 const DetailsPage = async ({ params }) => {
     const { id } = await params;
-    const prompt = await getSinglePrompt(id);
+    let prompt = await getSinglePrompt(id);
+    // promts = promts.filter(promt => promt.promtId === id);
+    // prompt = prompt.filter(promt => promt.status === 'Approved')
     const user = await getUserSession();
 
     const isPremiumUser = user?.plan === "premium" || user?.isPremium === true; 

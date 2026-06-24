@@ -29,7 +29,7 @@ export async function DashboardSidebar() {
     const adminNavLinks = [
         { icon: House, href: "/dashboard/admin", label: "Dashboard" },
         { icon: Users, href: "/dashboard/admin/users", label: "All Users" },
-        { icon: Building, href: "/dashboard/admin/prompts", label: "All Prompts" },
+        { icon: Building, href: "/dashboard/admin/promts", label: "All Prompts" },
         { icon: Briefcase, href: "/dashboard/admin/reported", label: "Reported Prompts" },
         { icon: CreditCard, href: "/dashboard/admin/payments", label: "All Payments" },
         { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },

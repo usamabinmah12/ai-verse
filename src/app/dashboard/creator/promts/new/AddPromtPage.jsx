@@ -3,9 +3,10 @@ import { useState } from "react";
 import { ArrowUpToLine, FileText, Sparkles, Layers, Sliders, Eye } from "@gravity-ui/icons";
 import { createPromt } from "@/lib/actions/promts";
 import { getUserSession } from "@/lib/core/session";
+import { useRouter } from "next/navigation"; // রিডাইরেক্ট করার জন্য
 
-export default function AddPromptPage({creatorId}) {
-    // Form States
+export default function AddPromptPage({ creatorId }) {
+    const router = useRouter();
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -16,26 +17,25 @@ export default function AddPromptPage({creatorId}) {
         difficulty: "Beginner", 
         visibility: "Public",   
     });
+
+    // সেশন ডেটা চেক করার জন্য
     const user = getUserSession();
-    console.log("user id " , user);
+    
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
     const [loading, setLoading] = useState(false);
     const [uploadError, setUploadError] = useState(null);
 
-    // Input Change Handler
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Image Selection & Preview Handler
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setUploadError(null);
 
         if (file) {
-            // Simple 5MB Validation
             if (file.size > 5 * 1024 * 1024) {
                 setUploadError("File size exceeds 5MB limit");
                 return;
@@ -45,11 +45,10 @@ export default function AddPromptPage({creatorId}) {
         }
     };
 
-    // ImgBB Image Upload Function
     const uploadImageToImgBB = async (file) => {
         const IMGBB_API_KEY = process.env.NEXT_PUBLIC_IMAGE_UPLOAD_API; 
         if (!IMGBB_API_KEY) {
-            console.error("ImgBB API Key is missing inside environment variables!");
+            console.error("ImgBB API Key is missing!");
             return null;
         }
 
@@ -62,65 +61,65 @@ export default function AddPromptPage({creatorId}) {
                 body: imageData
             });
             const data = await response.json();
-            
-            if (data.success) {
-                return data.data.url; // আসল ইমেজ সিডিএন লিঙ্ক
-            } else {
-                setUploadError("Upload failed. Try again.");
-                return null;
-            }
+            return data.success ? data.data.url : null;
         } catch (err) {
-            setUploadError("Network error during image upload");
             return null;
         }
     };
 
-    // Form Submit Handler
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setUploadError(null);
 
-        let thumbnailUrl = "";
+        try {
+            let thumbnailUrl = "";
 
-        // ইমেজ সিলেক্ট করা থাকলে প্রথমে ImgBB তে আপলোড হবে
-        if (selectedFile) {
-            const uploadedUrl = await uploadImageToImgBB(selectedFile);
-            if (uploadedUrl) {
+            // ১. ইমেজ থাকলে আপলোড হবে
+            if (selectedFile) {
+                const uploadedUrl = await uploadImageToImgBB(selectedFile);
+                if (!uploadedUrl) {
+                    setUploadError("Image upload failed. Please try again.");
+                    setLoading(false);
+                    return;
+                }
                 thumbnailUrl = uploadedUrl;
-            } else {
-                setLoading(false);
-                return;
             }
+
+            // ২. পেলোড তৈরি
+            const promptSubmissionData = {
+                title: formData.title,
+                description: formData.description,
+                content: formData.content,
+                category: formData.category.toLowerCase().trim(),
+                aiTool: formData.aiTool,
+                tags: formData.tags.split(",").map(tag => tag.trim()).filter(Boolean), 
+                difficulty: formData.difficulty,
+                visibility: formData.visibility,
+                thumbnail: thumbnailUrl, 
+                copyCount: 0,            
+                status: "pending", 
+                promtId: creatorId || user?.id, // Fallback safely     
+            };
+
+            // ৩. সার্ভার অ্যাকশন AWAIT করা হয়েছে (সবচেয়ে গুরুত্বপূর্ণ)
+            const response = await createPromt(promptSubmissionData);
+
+            if (response?.success || response) {
+                alert("Prompt successfully created!");
+                router.push(`/dashboard`); // সফল হলে ড্যাশবোর্ডে নিয়ে যাবে
+            } else {
+                setUploadError("Failed to save prompt in database.");
+            }
+        } catch (error) {
+            setUploadError("An unexpected error occurred.");
+        } finally {
+            setLoading(false);
         }
-
-        // ফাইনাল ডাটা অবজেক্ট
-        const promptSubmissionData = {
-            title: formData.title,
-            description: formData.description,
-            content: formData.content,
-            category: formData.category,
-            aiTool: formData.aiTool,
-            tags: formData.tags.split(",").map(tag => tag.trim()).filter(Boolean), 
-            difficulty: formData.difficulty,
-            visibility: formData.visibility,
-            thumbnail: thumbnailUrl, 
-            copyCount: 0,            
-            status: "pending", 
-            promtId:creatorId ,     
-        };
-        // console.log()
-        console.log("Final Prompt Payload for Server:", promptSubmissionData);
-        const pass = createPromt(promptSubmissionData);
-        // এখানে আপনার ব্যাকএন্ড ফেচ (Fetch API) রিকোয়েস্টটি অন করতে পারেন
-        alert("Prompt successfully created! (Check console for data object)");
-
-        setLoading(false);
     };
 
     return (
         <div className="max-w-3xl mx-auto p-6 sm:p-8 my-10 bg-slate-900/40 border border-slate-800/80 rounded-2xl shadow-xl backdrop-blur-sm text-slate-100 relative">
-            {/* Ambient background decoration */}
             <div className="absolute top-[-10%] left-[-10%] w-[250px] h-[250px] rounded-full bg-violet-600/5 blur-[80px] pointer-events-none" />
 
             <div className="mb-8 border-b border-slate-800/80 pb-5">
@@ -133,8 +132,7 @@ export default function AddPromptPage({creatorId}) {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-                
-                {/* 1. Prompt Title */}
+                {/* Prompt Title */}
                 <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Prompt Title</label>
                     <input
@@ -148,13 +146,13 @@ export default function AddPromptPage({creatorId}) {
                     />
                 </div>
 
-                {/* 2. Prompt Description */}
+                {/* Prompt Description */}
                 <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Prompt Description</label>
                     <textarea
                         name="description"
                         required
-                        rows="3"
+                        rows={3}
                         value={formData.description}
                         onChange={handleChange}
                         placeholder="Explain what this prompt does and its use case..."
@@ -162,7 +160,7 @@ export default function AddPromptPage({creatorId}) {
                     />
                 </div>
 
-                {/* 3. Prompt Content */}
+                {/* Prompt Content */}
                 <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
                         <FileText className="size-4 text-violet-400" /> Prompt Content
@@ -170,7 +168,7 @@ export default function AddPromptPage({creatorId}) {
                     <textarea
                         name="content"
                         required
-                        rows="6"
+                        rows={6}
                         value={formData.content}
                         onChange={handleChange}
                         placeholder="Act as an expert copywriter... [Paste your exact prompt here]"
@@ -178,9 +176,8 @@ export default function AddPromptPage({creatorId}) {
                     />
                 </div>
 
-                {/* 2 Column Responsive Grid */}
+                {/* Category & AI Tool */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Category */}
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
                             <Layers className="size-4 text-violet-400" /> Category
@@ -196,7 +193,6 @@ export default function AddPromptPage({creatorId}) {
                         />
                     </div>
 
-                    {/* AI Tool */}
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">AI Tool Name</label>
                         <input
@@ -211,7 +207,7 @@ export default function AddPromptPage({creatorId}) {
                     </div>
                 </div>
 
-                {/* 4. Tags */}
+                {/* Tags */}
                 <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Tags</label>
                     <input
@@ -225,9 +221,8 @@ export default function AddPromptPage({creatorId}) {
                     />
                 </div>
 
-                {/* 2 Column Options Grid */}
+                {/* Options Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {/* Difficulty Level */}
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
                             <Sliders className="size-4 text-violet-400" /> Difficulty Level
@@ -244,7 +239,6 @@ export default function AddPromptPage({creatorId}) {
                         </select>
                     </div>
 
-                    {/* Visibility */}
                     <div>
                         <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
                             <Eye className="size-4 text-violet-400" /> Visibility
@@ -261,7 +255,7 @@ export default function AddPromptPage({creatorId}) {
                     </div>
                 </div>
 
-                {/* 5. Thumbnail Image Upload via ImgBB */}
+                {/* Thumbnail Image Upload via ImgBB */}
                 <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Thumbnail Image</label>
                     <div className="border border-dashed border-slate-800 hover:border-violet-500/40 transition-colors rounded-2xl p-6 flex flex-col items-center justify-center relative cursor-pointer group bg-slate-950/45">
@@ -307,7 +301,6 @@ export default function AddPromptPage({creatorId}) {
                         {loading ? "Uploading & Submitting..." : "Submit Prompt"}
                     </button>
                 </div>
-
             </form>
         </div>
     );

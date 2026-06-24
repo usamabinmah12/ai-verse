@@ -4,7 +4,8 @@ import { Sparkles } from '@gravity-ui/icons';
 import PromptGrid from './PromptGrid';
 
 const AllPromtsPage = async () => {
-    const promts = await getPromt() || [];
+    let promts = await getPromt() || [];
+    promts = promts.filter(promt => promt.status === "Approved")
 
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
