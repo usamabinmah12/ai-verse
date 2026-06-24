@@ -32,13 +32,15 @@ const DetailsPage = async ({ params }) => {
   const { id } = await params;
   let prompt = await getSinglePrompt(id);
   const user = await getUserSession();
-  console.log("User", user);
-  console.log("User id is  : ", user.id);
+//   console.log("User", user);
+ console.log("User id is  : ", prompt);
   let reviews = await getReviews();
   reviews = reviews.filter((review) => review.promptId === id);
   //   console.log("Review : ", reviews.length);
   //   console.log("User id ios")
-  const isPremiumUser = user?.plan === "premium" || user?.isPremium === true;
+  let isPremiumUser =  user?.plan === "user_pro" || user?.plan === "creator_pro" || user?.role =="admin" || prompt?.visibility == "Public";
+//   let visibility = prompt?.visibility != "Public";
+  console.log("Mode is : " , isPremiumUser);
 
   if (!prompt) {
     return (
@@ -148,7 +150,7 @@ const DetailsPage = async ({ params }) => {
                     <p className="text-xs text-slate-400 mt-1 mb-4">
                       This high-tier prompt is exclusive to premium subscribers.
                     </p>
-                    <Link href="/payment" passHref legacyBehavior>
+                    <Link href="/plans" >
                       <Button
                         as="a"
                         className="w-full font-bold text-xs rounded-xl shadow-md bg-amber-500 hover:bg-amber-600 text-slate-950 transition-all duration-200"
@@ -160,6 +162,8 @@ const DetailsPage = async ({ params }) => {
                 </div>
               ) : (
                 <DetailActionArea
+                    isPremiumUser = {isPremiumUser}
+                  
                   promptText={prompt.content}
                   promptId={prompt._id}
                 />
@@ -188,7 +192,7 @@ const DetailsPage = async ({ params }) => {
             <h3 className="text-sm font-bold text-slate-200 mb-4 flex items-center justify-between">
               <span>⭐ Reviews & Ratings</span>
               <span className="text-xs font-semibold text-slate-500">
-                0 reviews
+               {reviews.length}
               </span>
             </h3>
             {isLocked ? (

@@ -5,10 +5,11 @@ import { Button } from '@heroui/react';
 import { Copy, Check } from '@gravity-ui/icons';
 import { updateCopy } from '@/lib/actions/update';
 import { router } from 'better-auth/api';
+import Link from 'next/link';
 
-export default function DetailActionArea({ promptText, promptId }) {
+export default function DetailActionArea({isPremiumUser, promptText, promptId }) {
     const [copied, setCopied] = useState(false);
-
+    
     const handleCopy = async () => {
     try {
         // ১. ইউজারের ক্লিপবোর্ডে প্রম্পট টেক্সট কপি করা
@@ -32,13 +33,14 @@ export default function DetailActionArea({ promptText, promptId }) {
         console.error("Failed to copy or update count:", err);
     }
 };
+    
 
     return (
         <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950 flex flex-col">
             {/* Top Bar for Action Area */}
             <div className="px-4 py-2 bg-slate-900/60 border-b border-slate-800/80 flex items-center justify-between">
                 <span className="uppercase font-bold tracking-widest text-xs text-violet-400">Plain Prompt Text</span>
-                <Button 
+                {isPremiumUser  ?  <Button 
                     size="sm" 
                     onClick={handleCopy}
                     className={`h-7 rounded-lg text-xs font-bold px-3.5 flex items-center gap-1.5 transition-all cursor-pointer ${
@@ -48,11 +50,16 @@ export default function DetailActionArea({ promptText, promptId }) {
                     }`}
                 >
                     {copied ? <><Check className="size-3.5" /> Copied!</> : <><Copy className="size-3.5" /> Copy Prompt</>}
-                </Button>
+                </Button> : 
+                <div>
+                    For copy <Link href={"/plans"} ><Button variant='primary'>UPGRADE TO PREMIUM </Button></Link>
+
+                </div> }
+               
             </div>
             {/* Real Prompt Content Body */}
             <div className="p-4 font-mono text-xs text-slate-300 whitespace-pre-wrap select-all leading-relaxed max-h-[350px] overflow-y-auto bg-slate-950">
-                {promptText}
+              {isPremiumUser ? <div> {promptText}</div> : "You are in Free Mode"} 
             </div>
         </div>
     );
