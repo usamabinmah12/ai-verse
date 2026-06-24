@@ -3,22 +3,35 @@
 import React, { useState } from 'react';
 import { Button } from '@heroui/react';
 import { Copy, Check } from '@gravity-ui/icons';
+import { updateCopy } from '@/lib/actions/update';
+import { router } from 'better-auth/api';
 
 export default function DetailActionArea({ promptText, promptId }) {
     const [copied, setCopied] = useState(false);
 
     const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(promptText);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-            
-            // অপশনাল: আপনি চাইলে এখানে ব্যাকএন্ডে ফায়ার করে ডাটাবেজের `copyCount` ১ বাড়িয়ে নিতে পারেন
-            // await fetch(`http://localhost:5000/api/promts/copy/${promptId}`, { method: 'PATCH' });
-        } catch (err) {
-            console.error("Failed to copy", err);
+    try {
+        // ১. ইউজারের ক্লিপবোর্ডে প্রম্পট টেক্সট কপি করা
+        await navigator.clipboard.writeText(promptText);
+        setCopied(true);
+        
+        // ২. ২ সেকেন্ড পর "Copied!" স্টেট রিসেট করা
+        setTimeout(() => setCopied(false), 2000);
+        
+        console.log("Prompt id is:", promptId);
+        
+        // ৩. আপনার সার্ভার অ্যাকশন কল করে ডাটাবেজে copyCount ১ বাড়িয়ে নেওয়া
+        const response = await updateCopy(promptId);
+        
+        if (response?.success) {
+            // ৪. ডাটাবেজ আপডেট হলে কোনো ফুল-পেজ রিলোড ছাড়াই নতুন কাউন্ট স্ক্রিনে দেখাবে
+            router.refresh(); 
         }
-    };
+
+    } catch (err) {
+        console.error("Failed to copy or update count:", err);
+    }
+};
 
     return (
         <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-950 flex flex-col">

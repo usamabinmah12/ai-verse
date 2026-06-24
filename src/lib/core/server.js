@@ -55,3 +55,16 @@ export const serverMutation = async (path, data , method="POST") => {
 
     return res.json();
 }
+export const serverMutationag = async (path, data , method="POST") => {
+    const res = await fetch(`${baseUrl}${path}`, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    // handle 401, 404, 403
+
+    return res.json();
+}
