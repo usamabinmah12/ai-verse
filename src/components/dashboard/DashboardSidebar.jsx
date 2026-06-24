@@ -21,7 +21,7 @@ export async function DashboardSidebar() {
        
         { icon: Bookmark, href: "/dashboard/user/saved-prompts", label: "Saved Prompts" },
         { icon: FileText, href: "/dashboard/user/my-reviews", label: "My Reviews" },
-        { icon: CreditCard, href: "/dashboard/user/billing", label: "Billing" },
+        { icon: CreditCard, href: "/dashboard/user/billings", label: "Billing" },
         { icon: Gear, href: "/settings", label: "Settings" },
     ];
 
