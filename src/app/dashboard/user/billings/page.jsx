@@ -39,7 +39,7 @@ const BillingPage = async () => {
                 <div className="flex justify-between">
                   <span className="text-slate-400">Price Paid:</span>
                   <span className="font-semibold text-slate-200">
-                    ${sub.price || "19.00"}/mo
+                    ${sub.price || "5.00"}/mo
                   </span>
                 </div>
                 <div className="flex justify-between">
