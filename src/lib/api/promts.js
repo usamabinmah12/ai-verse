@@ -5,7 +5,9 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 export const getPromt = async () =>{
     return serverFetch('/api/promts');
 }
-
+export const getSubscriptions = async() => {
+    return serverFetch('/api/subscriptions');
+}
 export const getJobById = async (jobId) => {
     return  serverFetch(`/api/jobs/${jobId}`);
 }
