@@ -5,9 +5,9 @@ import { Table, Button, Badge } from '@heroui/react';
 // Assuming gravity-ui/icons are installed and imported like this
 import { CircleArrowDownFill } from '@gravity-ui/icons';
 import { updateStatus } from '@/lib/actions/update';
-// import { updateCompany } from '@/lib/actions/companies';
+// import { updateCompany } from '@/lib/actions/promts';
 
-const CompanyTable = ({ companies }) => {
+const PromtTable = ({ promts }) => {
 
     const handleApprove = async (id) => {
         // const result = await updateCompany(id, { status: 'Approved' })
@@ -81,19 +81,19 @@ const CompanyTable = ({ companies }) => {
                             </Table.Column>
                         </Table.Header>
                         <Table.Body>
-                            {companies.map((company) => {
-                                const companyId = company._id?.$oid || company._id;
-                                const statusInfo = getStatusDetails(company.status);
+                            {promts.map((promt) => {
+                                const promtId = promt._id?.$oid || promt._id;
+                                const statusInfo = getStatusDetails(promt.status);
 
                                 return (
-                                    <Table.Row key={companyId} className="border-b border-neutral-800/50 hover:bg-neutral-900/30 transition-colors">
-                                        {/* Company Avatar & Name */}
+                                    <Table.Row key={promtId} className="border-b border-neutral-800/50 hover:bg-neutral-900/30 transition-colors">
+                                        {/* promt Avatar & Name */}
                                         <Table.Cell className="py-4 align-middle">
                                             <div className="flex items-center gap-3">
                                                 <div className="w-9 h-9 flex items-center justify-center bg-neutral-800 text-neutral-300 rounded font-semibold text-sm tracking-wider">
-                                                   {company.aiTool}
+                                                   {promt.aiTool}
                                                 </div>
-                                                <span className="font-medium text-neutral-200">{company.name}</span>
+                                                <span className="font-medium text-neutral-200">{promt.name}</span>
                                             </div>
                                         </Table.Cell>
 
@@ -117,27 +117,27 @@ const CompanyTable = ({ companies }) => {
 
                                         {/* Date Submitted */}
                                         <Table.Cell className="py-4 align-middle text-neutral-400">
-                                            {formatDate(company.createdAt?.$date || company.createdAt)}
+                                            {formatDate(promt.createdAt?.$date || promt.createdAt)}
                                         </Table.Cell>
 
                                         {/* Actions Panel */}
                                         <Table.Cell className="py-4 align-middle text-right">
                                             <div className="flex justify-end gap-2">
-                                                {company.status?.toLowerCase() !== 'approved' && (
+                                                {promt.status?.toLowerCase() !== 'approved' && (
                                                     <Button
                                                         size="sm"
                                                         variant="light"
-                                                        onClick={() => handleApprove(companyId)}
+                                                        onClick={() => handleApprove(promtId)}
                                                         className="bg-emerald-950/30 hover:bg-emerald-900/50 text-emerald-500 border border-emerald-900/60 rounded px-3 py-1 text-xs font-medium transition-colors"
                                                     >
                                                         Approve
                                                     </Button>
                                                 )}
-                                                {company.status?.toLowerCase() !== 'rejected' && (
+                                                {promt.status?.toLowerCase() !== 'rejected' && (
                                                     <Button
                                                         size="sm"
                                                         variant="light"
-                                                        onClick={() => handleReject(companyId)}
+                                                        onClick={() => handleReject(promtId)}
                                                         className="bg-rose-950/20 hover:bg-rose-900/40 text-rose-500 border border-rose-900/40 rounded px-3 py-1 text-xs font-medium transition-colors"
                                                     >
                                                         Reject
@@ -156,4 +156,4 @@ const CompanyTable = ({ companies }) => {
     );
 };
 
-export default CompanyTable;
+export default PromtTable;
