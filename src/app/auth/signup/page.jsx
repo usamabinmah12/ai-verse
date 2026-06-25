@@ -17,7 +17,7 @@ function SignupForm() {
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirect") || "/";
 
-    // UI States
+    
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false); 
@@ -26,7 +26,7 @@ function SignupForm() {
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    // 📧 ১. কাস্টম ইমেইল সাইন-আপ হ্যান্ডলার
+    
     const handleSignup = async (e) => {
         e.preventDefault();
 
@@ -60,7 +60,7 @@ function SignupForm() {
         }
     };
 
-    // 🌐 ২. নতুন গুগল সাইন-আপ হ্যান্ডলার (অটো রোল ও প্ল্যান সেট লজিক সহ)
+    
     const handleGoogleSignup = async () => {
         setError("");
         setSuccess("");
@@ -70,7 +70,7 @@ function SignupForm() {
             await signIn.social({
                 provider: "google",
                 callbackURL: redirectTo,
-                // 💡 গুগল অ্যাকাউন্ট দিয়ে ফার্স্ট টাইম সাইন-আপ করলে এই মেটাডেটা ডেটাবেজে সেট হবে
+                
                 newUserOptions: {
                     role: "user",
                     plan: "user_free"
@@ -90,7 +90,7 @@ function SignupForm() {
                 <p className="text-xs sm:text-sm text-slate-400 font-light">Fill in the fields below to get started</p>
             </div>
 
-            {/* 🚀 গুগল সাইন-আপ বাটন সেকশন */}
+          
             <div className="mb-5">
                 <Button
                     type="button"
@@ -123,14 +123,14 @@ function SignupForm() {
                 </Button>
             </div>
 
-            {/* 📄 Separator / Divider */}
+           
             <div className="flex items-center gap-3 my-2 mb-5 select-none">
                 <div className="h-[1px] bg-slate-900 flex-grow" />
                 <span className="text-[10px] font-bold font-mono tracking-widest text-slate-600 uppercase">OR</span>
                 <div className="h-[1px] bg-slate-900 flex-grow" />
             </div>
 
-            {/* Form Body */}
+            
             <form onSubmit={handleSignup} className="flex flex-col gap-5">
 
                 {/* Name Field */}
@@ -148,7 +148,7 @@ function SignupForm() {
                     </InputGroup>
                 </TextField>
 
-                {/* Email Field */}
+               
                 <TextField isRequired name="email" type="email" className="flex flex-col gap-1.5">
                     <Label className="text-xs font-bold uppercase tracking-wider text-slate-400">Email Address</Label>
                     <InputGroup className="flex items-center gap-2 border border-slate-800 rounded-xl px-3 bg-slate-950/50 focus-within:border-violet-500/50 transition-colors">
@@ -162,7 +162,7 @@ function SignupForm() {
                     </InputGroup>
                 </TextField>
 
-                {/* Password Field */}
+               
                 <TextField isRequired name="password" className="flex flex-col gap-1.5">
                     <Label className="text-xs font-bold uppercase tracking-wider text-slate-400">Password</Label>
                     <InputGroup className="flex items-center gap-2 border border-slate-800 rounded-xl px-3 bg-slate-950/50 focus-within:border-violet-500/50 transition-colors">

@@ -22,7 +22,7 @@ export async function DashboardSidebar() {
         { icon: Bookmark, href: "/dashboard/user/saved-prompts", label: "Saved Prompts" },
         { icon: FileText, href: "/dashboard/user/my-reviews", label: "My Reviews" },
         { icon: CreditCard, href: "/dashboard/user/billings", label: "Billing" },
-        { icon: Gear, href: "/settings", label: "Settings" },
+        
     ];
 
     // Admin control management paths
@@ -30,9 +30,9 @@ export async function DashboardSidebar() {
         { icon: House, href: "/dashboard/admin", label: "Dashboard" },
         { icon: Users, href: "/dashboard/admin/users", label: "All Users" },
         { icon: Building, href: "/dashboard/admin/promts", label: "All Prompts" },
-        { icon: Briefcase, href: "/dashboard/admin/reported", label: "Reported Prompts" },
+        
         { icon: CreditCard, href: "/dashboard/admin/subscriptions", label: "All Payments" },
-        { icon: Gear, href: "/dashboard/admin/settings", label: "Settings" },
+       
     ];
 
     const navLinksMap = {

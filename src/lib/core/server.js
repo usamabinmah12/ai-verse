@@ -30,7 +30,7 @@ export const authHeader = async() => {
 export const serverEdit = async (path, editForm) => {
     try {
         const res = await fetch(`${baseUrl}${path}`, {
-            method: "PUT", // আপনি চাইলে এখানে "PATCH" মেথডও ব্যবহার করতে পারেন
+            method: "PUT", 
             headers: {
                 'Content-Type': 'application/json',
                 ...await authHeader()
@@ -38,7 +38,7 @@ export const serverEdit = async (path, editForm) => {
             body: JSON.stringify(editForm),
         });
 
-        // যদি রেসপন্স ঠিকঠাক না আসে (যেমন: 400, 401, 404, 500)
+       
         if (!res.ok) {
             const errorData = await res.json().catch(() => ({}));
             throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
@@ -56,7 +56,7 @@ export const serverDelete = async (path) => {
         headers: {
             'Content-Type': 'application/json',
         }
-        // ডিলিট রিকোয়েস্টে সাধারণত বডি বা ডাটা দরকার হয় না
+       
     });
 
     // handle 401, 404, 403

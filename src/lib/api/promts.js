@@ -8,6 +8,9 @@ export const getPromt = async () =>{
 export const getSubscriptions = async() => {
     return serverFetch('/api/subscriptions');
 }
+export const getUsers = async() => {
+    return serverFetch('/api/users');
+}
 
 export const getReviews = async() => {
     return serverFetch('/api/reviews');

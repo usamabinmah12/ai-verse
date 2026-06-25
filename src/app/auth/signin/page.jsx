@@ -14,7 +14,7 @@ function SigninForm() {
     const searchParams = useSearchParams();
     const redirectTo = searchParams.get("redirect") || "/";
 
-    // UI States
+    
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false); // 💡 গুগল লোডিং স্টেট
@@ -23,7 +23,7 @@ function SigninForm() {
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    // 📧 ১. সাধারণ ইমেইল সাইন-ইন হ্যান্ডলার
+   
     const handleSignin = async (e) => {
         e.preventDefault();
         setError("");
@@ -51,7 +51,7 @@ function SigninForm() {
         }
     };
 
-    // 🌐 ২. নতুন যুক্ত হওয়া গুগল সাইন-ইন হ্যান্ডলার
+   
     const handleGoogleSignin = async () => {
         setError("");
         setSuccess("");
@@ -60,7 +60,7 @@ function SigninForm() {
         try {
             await signIn.social({
                 provider: "google",
-                callbackURL: redirectTo, // সাইন-ইন সফল হলে এই ইউআরএল-এ রিডাইরেক্ট করবে
+                callbackURL: redirectTo, 
             });
         } catch (err) {
             setError("Google authentication failed. Please try again.");
@@ -70,13 +70,13 @@ function SigninForm() {
 
     return (
         <Card className="w-full max-w-md p-6 sm:p-8 bg-slate-900/40 border border-slate-800 rounded-2xl shadow-xl backdrop-blur-sm text-slate-100 relative">
-            {/* Header Container */}
+          
             <div className="flex flex-col items-center justify-center gap-1.5 pb-6 border-b border-slate-800/80 mb-6 text-center">
                 <h1 className="text-2xl font-black bg-gradient-to-r from-violet-400 to-indigo-400 bg-clip-text text-transparent">Welcome back</h1>
                 <p className="text-xs sm:text-sm text-slate-400 font-light">Enter your credentials to access your account</p>
             </div>
 
-            {/* 🚀 ৩. গুগল সাইন-ইন বাটন সেকশন */}
+            
             <div className="mb-5">
                 <Button
                     type="button"
@@ -110,14 +110,14 @@ function SigninForm() {
                 </Button>
             </div>
 
-            {/* 📄 8. Morder Separator / Divider */}
+           
             <div className="flex items-center gap-3 my-2 mb-5 select-none">
                 <div className="h-[1px] bg-slate-900 flex-grow" />
                 <span className="text-[10px] font-bold font-mono tracking-widest text-slate-600 uppercase">OR</span>
                 <div className="h-[1px] bg-slate-900 flex-grow" />
             </div>
 
-            {/* Form Body */}
+            
             <form onSubmit={handleSignin} className="flex flex-col gap-5">
 
                 {/* Email Field */}
@@ -157,7 +157,7 @@ function SigninForm() {
                     </InputGroup>
                 </TextField>
 
-                {/* Dynamic Status Badges */}
+                
                 {error && (
                     <div className="p-3.5 text-xs font-medium rounded-xl bg-rose-500/10 text-rose-450 border border-rose-500/20">
                         <span className="font-bold">Error:</span> {error}
@@ -170,7 +170,7 @@ function SigninForm() {
                     </div>
                 )}
 
-                {/* Action Button */}
+                
                 <Button
                     type="submit"
                     className="w-full font-bold tracking-wide rounded-xl text-sm h-12 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-lg shadow-violet-600/15 cursor-pointer"
@@ -180,7 +180,7 @@ function SigninForm() {
                     Sign In
                 </Button>
 
-                {/* Navigation Option */}
+               
                 <div className="text-center pt-4 border-t border-slate-800/80 mt-2 text-sm text-slate-400 font-light">
                     New to AiVerse?{" "}
                     <Link href={`/auth/signup?redirect=${redirectTo}`} className="font-semibold text-violet-400 hover:underline cursor-pointer text-sm">
