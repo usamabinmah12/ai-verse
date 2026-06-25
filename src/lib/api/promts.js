@@ -1,18 +1,19 @@
-import { serverFetch } from "../core/server";
+import { protectedFetch, serverFetch } from "../core/server";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getPromt = async () =>{
-    return serverFetch('/api/promts');
+    return protectedFetch('/api/promts');
 }
 export const getSubscriptions = async() => {
-    return serverFetch('/api/subscriptions');
+    return protectedFetch('/api/subscriptions');
 }
+
 export const getReviews = async() => {
-    return serverFetch('/api/reviews');
+    return protectedFetch('/api/reviews');
 }
-export const getJobById = async (jobId) => {
-    return  serverFetch(`/api/jobs/${jobId}`);
+export const getPromtSingle = async(id) => {
+    return protectedFetch(`/api/promts/${id}`);
 }
 
 export const getCompanyJobs = async (companyId, status = 'active') => {

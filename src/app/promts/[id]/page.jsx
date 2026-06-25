@@ -12,19 +12,12 @@ import {
 import Link from "next/link";
 import DetailActionArea from "@/components/DetailActionArea";
 import ReviewForm from "@/components/ReviewForm"; // নিচে তৈরি করা নতুন ক্লায়েন্ট কম্পোনেন্ট
-import { getReviews } from "@/lib/api/promts";
+import { getPromtSingle, getReviews } from "@/lib/api/promts";
 
 async function getSinglePrompt(id) {
-  try {
-    const res = await fetch(`http://localhost:5000/api/promts/${id}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return null;
-    return res.json();
-  } catch (err) {
-    console.error("Error fetching prompt details:", err);
-    return null;
-  }
+  
+  const res = await getPromtSingle(id);
+  return res;
 }
 
 // 🚀 এটি এখন একটি পিওর সার্ভার কম্পোনেন্ট, তাই কোনো এরর আসবে না
