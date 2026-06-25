@@ -3,17 +3,17 @@ import { protectedFetch, serverFetch } from "../core/server";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getPromt = async () =>{
-    return protectedFetch('/api/promts');
+    return serverFetch('/api/promts');
 }
 export const getSubscriptions = async() => {
-    return protectedFetch('/api/subscriptions');
+    return serverFetch('/api/subscriptions');
 }
 
 export const getReviews = async() => {
-    return protectedFetch('/api/reviews');
+    return serverFetch('/api/reviews');
 }
 export const getPromtSingle = async(id) => {
-    return protectedFetch(`/api/promts/${id}`);
+    return serverFetch(`/api/promts/${id}`);
 }
 
 export const getCompanyJobs = async (companyId, status = 'active') => {

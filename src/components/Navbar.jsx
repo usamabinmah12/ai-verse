@@ -14,10 +14,14 @@ const Navbar = () => {
   const user = session?.user;
   // Auth States for assignment requirements
   const isLoggedIn = user ? true : false;
-  const userRole = user?.role; // user | creator | admin
-  console.log("User role is : ", userRole);
-  const userPlan = user?.plan;
-  console.log("Plan is : ", userPlan);
+  
+  let userRole = user?.role || "user" ;
+  if(!userRole) {
+    userRole = "user"
+  }
+  // console.log("User role is : ", userRole);
+  const userPlan = user?.plan || "user_free";
+  // console.log("Plan is : ", userPlan);
   const handleSignOut = async () => {
     await signOut();
   };
