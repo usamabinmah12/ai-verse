@@ -4,6 +4,7 @@ import { ArrowUpToLine, FileText, Sparkles, Layers, Sliders, Eye } from "@gravit
 import { createPromt } from "@/lib/actions/promts";
 import { getUserSession } from "@/lib/core/session";
 import { useRouter } from "next/navigation"; // রিডাইরেক্ট করার জন্য
+import { toast } from "react-toastify";
 
 export default function AddPromptPage({ creatorId }) {
     const router = useRouter();
@@ -106,10 +107,10 @@ export default function AddPromptPage({ creatorId }) {
             const response = await createPromt(promptSubmissionData);
 
             if (response?.success || response) {
-                alert("Prompt successfully created!");
-                router.push(`/dashboard`); // সফল হলে ড্যাশবোর্ডে নিয়ে যাবে
+                toast("Prompt successfully created!");
+                router.push(`/dashboard/creator`);
             } else {
-                setUploadError("Failed to save prompt in database.");
+               toast("XXX Failed to save prompt in database.");
             }
         } catch (error) {
             setUploadError("An unexpected error occurred.");

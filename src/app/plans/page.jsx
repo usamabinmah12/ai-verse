@@ -104,12 +104,12 @@ const PricingPage = () => {
     {
       question: "Can I cancel my subscription at any time?",
       answer:
-        "Yes, absolutely. All our premium tiers operate on flexible, non-binding month-to-month subscription structures. You can easily modify, downgrade, or cancel your renewal configurations through your profile billing dashboard settings at any time with no penalties.",
+        "No, absolutely not. once you complete purchased",
     },
     {
       question: "How do refunds work if I change my mind?",
       answer:
-        "We maintain a 14-day satisfaction policy. If you determine the premium features aren’t a proper fit for your current search or hiring sequence within your initial two weeks of service, reach out to support for a complete refund.",
+        "It is proper fit for your current search or hiring sequence within your initial purchased we assume.",
     },
     {
       question: "What payment methods do you accept?",
@@ -119,7 +119,7 @@ const PricingPage = () => {
     {
       question: "What happens if I decide to switch plans mid-month?",
       answer:
-        "If you upgrade your plan tier mid-cycle, the transition occurs immediately, and your remaining days on the old tier are applied as a pro-rated credit toward your updated invoice. Downgrades take effect starting with your subsequent billing date.",
+        "It is statice so , no way to switch once you purchased , You can switch to user and creator",
     },
   ];
 
@@ -155,7 +155,7 @@ const PricingPage = () => {
               }`}
             >
               <Person className="w-4 h-4" />
-              For Job users
+              For users
             </button>
             <button
               onClick={() => setBillingTarget("creator")}

@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { Pencil, TrashBin, Xmark } from "@gravity-ui/icons"; // Xmark আইকনটি ক্লোজ করার জন্য যোগ করা হয়েছে
 import { deletePromt } from "@/lib/actions/delete";
 import { editPromt } from "@/lib/actions/edit";
+import { ToastBar } from "react-hot-toast";
+import { toast } from "react-toastify";
+// import { revalidatePath } from "next/cache";
 
 const PromtTable = ({ promt }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,18 +29,58 @@ const PromtTable = ({ promt }) => {
     console.log("Submitting updated prompt for ID:", promt._id, editForm);
     // এখানে আপনার আপডেট করার সার্ভার অ্যাকশনটি কল করবেন (যেমন: await updatePromt(promt._id, editForm))
     await editPromt(promt._id, editForm);
+    toast("Edited successfully");
     setIsModalOpen(false); // সাবমিট শেষে মোডাল ক্লোজ হবে
   };
 
-  const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this prompt?",
-    );
-    if (confirmDelete) {
-      console.log("Delete clicked for ID:", id);
-      await deletePromt(id);
+  const handleDelete = (id) => {
+  // react-toastify এর কাস্টম কনফার্মেশন টোস্ট
+  toast(
+    ({ closeToast }) => (
+      <div className="p-1">
+        <p className="text-sm font-medium text-slate-200 mb-3">
+          Are you sure you want to delete this prompt?
+        </p>
+        <div className="flex justify-end gap-2">
+          {/* Cancel Button */}
+          <button
+            onClick={closeToast}
+            className="px-3 py-1.5 text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-lg transition-colors cursor-pointer"
+          >
+            Cancel
+          </button>
+          
+          {/* Confirm Delete Button */}
+          <button
+            onClick={async () => {
+              console.log("Delete clicked for ID:", id);
+              closeToast(); // প্রথমে কনফার্মেশন টোস্টটি বন্ধ করবে
+              
+              try {
+                await deletePromt(id); // আপনার আসল ডিলিট API কল
+                toast.success("Deleted Successfully!!", { theme: "dark" });
+                // revalidatePath("dashboard/creator/my-promts");
+              } catch (error) {
+                toast.error("Failed to delete!", { theme: "dark" });
+              }
+            }}
+            className="px-3 py-1.5 text-xs bg-rose-600 hover:bg-rose-500 text-white font-semibold rounded-lg transition-colors cursor-pointer shadow-lg shadow-rose-600/10"
+          >
+            Yes, Delete
+          </button>
+        </div>
+      </div>
+    ),
+    {
+      position: "top-center",
+      autoClose: false,   // ইউজার ক্লিক না করা পর্যন্ত থাকবে
+      closeOnClick: false, // বাইরে ক্লিক করলে বন্ধ হবে না
+      draggable: false,
+      theme: "dark",
+      className: "border border-slate-800 bg-slate-900 rounded-xl shadow-2xl",
     }
-  };
+  );
+};
 
   const statusStyles = {
     approved: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",

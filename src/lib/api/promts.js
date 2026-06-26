@@ -1,9 +1,12 @@
+import { revalidatePath } from "next/cache";
 import { protectedFetch, serverFetch } from "../core/server";
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getPromt = async () =>{
-    return serverFetch('/api/promts');
+    const result = await serverFetch('/api/promts');
+    // revalidatePath('/api/promts');
+    return result;
 }
 export const getSubscriptions = async() => {
     return serverFetch('/api/subscriptions');

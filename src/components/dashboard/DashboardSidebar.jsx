@@ -19,7 +19,7 @@ export async function DashboardSidebar() {
     const userNavLinks = [
         { icon: House, href: "/dashboard/user", label: "Dashboard" },
        
-        { icon: Bookmark, href: "/dashboard/user/saved-prompts", label: "Saved Prompts" },
+        // { icon: Bookmark, href: "/dashboard/user/saved-prompts", label: "Saved Prompts" },
         { icon: FileText, href: "/dashboard/user/my-reviews", label: "My Reviews" },
         { icon: CreditCard, href: "/dashboard/user/billings", label: "Billing" },
         

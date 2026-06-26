@@ -1,23 +1,24 @@
-
 import { getPromt } from "@/lib/api/promts";
 import { Sparkles } from "@gravity-ui/icons";
 import PromptGrid from "./PromptGrid";
-import { Pagination } from "@heroui/react";
+import MotionContainer from "./MotionContainer"; // 💡 নতুন তৈরি করা অ্যানিমেশন কন্টেনার
+import { getUserSession } from "@/lib/core/session";
 
 const AllPromtsPage = async () => {
-    // const [page, setPage] =  1;
-  let promts = (await getPromt()) || [];
-  promts = promts.filter((promt) => promt.status === "Approved");
-    const startItem = 1;
-    const endItem = promts.length;
-    const totalItems = endItem;
+  const Allpromts = (await getPromt()) || [];
+  const promts = Allpromts.filter((promt) => promt.status == "Approved");
+  // const user = await getUserSession();
+  // const copied  = user?.
+   
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       {/* Ambient Background Mesh */}
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-violet-600/10 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/5 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      {/* 💡 মোশন কন্টেনার দিয়ে পুরো লেআউট র‍্যাপ করা হয়েছে */}
+      <MotionContainer className="max-w-7xl mx-auto relative z-10">
+        
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-800/80 pb-8 mb-10 gap-6">
           <div>
@@ -51,41 +52,9 @@ const AllPromtsPage = async () => {
         ) : (
           <>
             <PromptGrid promts={promts} />
-            {/* <Pagination className="w-full"> */}
-      {/* <Pagination.Summary>
-        Showing {startItem}-{endItem} of {totalItems} results
-      </Pagination.Summary>
-      <Pagination.Content>
-        <Pagination.Item>
-          <Pagination.Previous isDisabled={1} onPress={() => setPage((p) => p - 1)}>
-            <Pagination.PreviousIcon />
-            <span>Previous</span>
-          </Pagination.Previous>
-        </Pagination.Item>
-        {getPageNumbers().map((p, i) =>
-          p === "ellipsis" ? (
-            <Pagination.Item key={`ellipsis-${i}`}>
-              <Pagination.Ellipsis />
-            </Pagination.Item>
-          ) : (
-            <Pagination.Item key={p}>
-              <Pagination.Link isActive={p === page} onPress={() => setPage(p)}>
-                {p}
-              </Pagination.Link>
-            </Pagination.Item>
-          ),
-        )}
-        <Pagination.Item>
-          <Pagination.Next isDisabled={page === totalPages} onPress={() => setPage((p) => p + 1)}>
-            <span>Next</span>
-            <Pagination.NextIcon />
-          </Pagination.Next>
-        </Pagination.Item>
-      </Pagination.Content>
-    </Pagination> */}
           </>
         )}
-      </div>
+      </MotionContainer>
     </div>
   );
 };
