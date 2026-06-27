@@ -153,7 +153,7 @@ const Banner = () => {
             <motion.button
               whileHover={{ scale: 1.03, backgroundColor: "rgba(30, 41, 59, 1)" }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => router.push('/dashboard/creator')}
+              onClick={() => router.push('/auth/signup')}
               className="border border-slate-800 bg-slate-900/40 text-slate-300 text-sm font-medium rounded-xl px-6 h-12 transition-all cursor-pointer"
             >
               Become a Creator

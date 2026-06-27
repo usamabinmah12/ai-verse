@@ -13,8 +13,10 @@ import {
     Key
 } from "@gravity-ui/icons";
 import { getUserSession } from '@/lib/core/session';
+import { toast } from 'react-toastify';
 
 export default async function UserPage() {
+    
     const user = await getUserSession();
     const userProfile = {
         name: user?.name,

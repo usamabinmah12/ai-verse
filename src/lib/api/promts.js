@@ -9,23 +9,23 @@ export const getPromt = async (page) =>{
         page = 1;
     }
     const result = await serverFetch( `/api/promts?page=${page}`);
-    // const result = await serverFetch('/api/promts');
-    // revalidatePath('/api/promts');
+    // / const result = await serverFetch('/api/promts');
+    // revalidatePath('/promts');
    
     return result;
 }
 export const getSubscriptions = async() => {
-    return serverFetch('/api/subscriptions');
+    return protectedFetch('/api/subscriptions');
 }
 export const getUsers = async() => {
-    return serverFetch('/api/users');
+    return protectedFetch('/api/users');
 }
 
 export const getReviews = async() => {
     return serverFetch('/api/reviews');
 }
 export const getPromtSingle = async(id) => {
-    return serverFetch(`/api/promts/${id}`);
+    return protectedFetch(`/api/promts/${id}`);
 }
 
 export const getCompanyJobs = async (companyId, status = 'active') => {

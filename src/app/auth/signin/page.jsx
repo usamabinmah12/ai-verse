@@ -5,6 +5,7 @@ import { Card, Button, Link, TextField, Label, InputGroup, Input } from "@heroui
 import { Eye, EyeSlash, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { signIn } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 function SigninForm() {
     // Form fields
@@ -43,6 +44,7 @@ function SigninForm() {
                 setEmail("");
                 setPassword("");
                 router.push(redirectTo);
+                toast("Signned in Succesfully");
             }
         } catch (err) {
             setError("An unexpected network error occurred.");

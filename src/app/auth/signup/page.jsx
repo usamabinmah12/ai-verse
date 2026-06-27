@@ -5,6 +5,7 @@ import { Card, Button, Link, TextField, Label, InputGroup, Input, Radio, RadioGr
 import { Eye, EyeSlash, Person, At, ShieldKeyhole } from "@gravity-ui/icons";
 import { signUp, signIn } from "@/lib/auth-client"; 
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 function SignupForm() {
     // Form fields
@@ -52,6 +53,7 @@ function SignupForm() {
                 setEmail("");
                 setPassword("");
                 router.push(redirectTo);
+                 toast("Signned up Succesfully");
             }
         } catch (err) {
             setError("An unexpected network error occurred.");

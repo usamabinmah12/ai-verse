@@ -1,19 +1,17 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Table ,Card, Button, Chip, Input, Pagination } from "@heroui/react";
+import { Table, Card, Button, Chip, Input, Pagination, Spinner } from "@heroui/react"; // 💡 Spinner ইম্পোর্ট করা হয়েছে
 import { Copy, Check, Layers, ArrowRight, Magnifier } from "@gravity-ui/icons";
 import Link from "next/link";
 
-
-export default function PromptGrid({ promtsData , totalPages, isLoading = false }) {
+export default function PromptGrid({ promtsData, totalPages, page, isLoading = false }) {
   const [copiedId, setCopiedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTool, setSelectedTool] = useState("All");
   const promts = promtsData;
   console.log("Promts : ", promts);
-  const page = promtsData.page;
-  // const totalPages = promtsData.totalPage;
+  
   const pages = [];
   console.log("totalPages : ", totalPages);
   for (let i = 1; i <= totalPages; i++) {
@@ -44,7 +42,6 @@ export default function PromptGrid({ promtsData , totalPages, isLoading = false 
     });
   }, [promts, searchQuery, selectedTool]);
 
-  
   const aiToolsList = useMemo(() => {
     const tools = promts.map((p) => p.aiTool).filter(Boolean);
     return ["All", ...new Set(tools)];
@@ -92,10 +89,8 @@ export default function PromptGrid({ promtsData , totalPages, isLoading = false 
       {/* 🌀 4. Loading Spinner Component */}
       {isLoading ? (
         <div className="flex flex-col items-center justify-center py-24 space-y-4">
-          <div className="relative size-12">
-            <div className="absolute inset-0 rounded-full border-4 border-violet-500/10" />
-            <div className="absolute inset-0 rounded-full border-4 border-t-violet-500 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
-          </div>
+          {/* 💡 HeroUI Spinner দিয়ে আগের কাস্টম ডিফ-টি রিপ্লেস করা হয়েছে */}
+          <Spinner size="lg" color="secondary" labelColor="secondary" />
           <p className="text-xs text-slate-400 font-mono tracking-wider animate-pulse">
             Loading AI Prompts...
           </p>
@@ -197,8 +192,7 @@ export default function PromptGrid({ promtsData , totalPages, isLoading = false 
 
                     <Link
                       href={`/promts/${item._id || "details"}`}
-                      passHref
-                      legacyBehavior
+                     
                     >
                       <Button
                         as="a"
@@ -214,63 +208,63 @@ export default function PromptGrid({ promtsData , totalPages, isLoading = false 
               );
             })}
           </div>
+
           <Table.Footer>
-  <Pagination size="sm">
-    <Pagination.Content>
-      
-      {/* ─── PREVIOUS BUTTON ─── */}
-      <Pagination.Item>
-        <Pagination.Previous isDisabled={page === 1}>
-          {page === 1 ? (
-            <span className="flex gap-2 text-slate-600 cursor-not-allowed">
-              <Pagination.PreviousIcon /> Prev
-            </span>
-          ) : (
-            <Link
-              className="flex gap-2"
-              href={`/promts?page=${page - 1}`}
-            >
-              <Pagination.PreviousIcon /> Prev
-            </Link>
-          )}
-        </Pagination.Previous>
-      </Pagination.Item>
+            <Pagination size="sm">
+              <Pagination.Content>
+                
+                {/* ─── PREVIOUS BUTTON ─── */}
+                <Pagination.Item>
+                  <Pagination.Previous isDisabled={page === 1}>
+                    {page === 1 ? (
+                      <span className="flex gap-2 text-slate-600 cursor-not-allowed">
+                        <Pagination.PreviousIcon /> Prev
+                      </span>
+                    ) : (
+                      <Link
+                        className="flex gap-2"
+                        href={`/promts?page=${page - 1}`}
+                      >
+                        <Pagination.PreviousIcon /> Prev
+                      </Link>
+                    )}
+                  </Pagination.Previous>
+                </Pagination.Item>
 
-      {/* ─── NUMBERED PAGES ─── */}
-      {pages.map((p) => (
-        <Pagination.Item key={p}>
-          <Link href={`/promts?page=${p}`}>
-            <Pagination.Link isActive={p === page}>
-              {p}
-            </Pagination.Link>
-          </Link>
-        </Pagination.Item>
-      ))}
+                {/* ─── NUMBERED PAGES ─── */}
+                {pages.map((p) => (
+                  <Pagination.Item key={p}>
+                    <Link href={`/promts?page=${p}`}>
+                      <Pagination.Link isActive={p === page}>
+                        {p}
+                      </Pagination.Link>
+                    </Link>
+                  </Pagination.Item>
+                ))}
 
-      {/* ─── NEXT BUTTON (FIXED LINK & DISABLED STATE) ─── */}
-      <Pagination.Item>
-        <Pagination.Next isDisabled={page === totalPages}>
-          {page === totalPages ? (
-            <span className="flex gap-2 text-slate-600 cursor-not-allowed">
-              Next <Pagination.NextIcon />
-            </span>
-          ) : (
-            <Link
-              className="flex gap-2"
-              href={`/promts?page=${page + 1}`} 
-            >
-              Next
-              <Pagination.NextIcon />
-            </Link>
-          )}
-        </Pagination.Next>
-      </Pagination.Item>
+                {/* ─── NEXT BUTTON (FIXED LINK & DISABLED STATE) ─── */}
+                <Pagination.Item>
+                  <Pagination.Next isDisabled={page === totalPages}>
+                    {page === totalPages ? (
+                      <span className="flex gap-2 text-slate-600 cursor-not-allowed">
+                        Next <Pagination.NextIcon />
+                      </span>
+                    ) : (
+                      <Link
+                        className="flex gap-2"
+                        href={`/promts?page=${page + 1}`} 
+                      >
+                        Next
+                        <Pagination.NextIcon />
+                      </Link>
+                    )}
+                  </Pagination.Next>
+                </Pagination.Item>
 
-    </Pagination.Content>
-  </Pagination>
-</Table.Footer>
+              </Pagination.Content>
+            </Pagination>
+          </Table.Footer>
         </>
-        /* 🎯 Grid List Display */
       )}
     </div>
   );

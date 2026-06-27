@@ -7,14 +7,15 @@ import { Button } from "@heroui/react";
 import logo from "../../assets/logo.jpg";
 import { signOut, useSession } from "@/lib/auth-client";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { data: session, isPending, status } = useSession(); // 💡 isPending এবং status নেওয়া হয়েছে
+  const { data: session, isPending, status } = useSession(); 
 
   const user = session?.user;
   const isLoggedIn = !!user;
-  // সেশন চেক করা হচ্ছে কিনা তা নির্ধারণ (loading বা pending স্টেট)
+  
   const isLoading = isPending || status === "loading";
   
   let userRole = user?.role || "user";
@@ -22,6 +23,7 @@ const Navbar = () => {
   
   const handleSignOut = async () => {
     await signOut();
+    toast("Logged Out Succesfully");
   };
 
   const menuItems = [
@@ -73,7 +75,7 @@ const Navbar = () => {
             </Link>
           </div>
 
-          {/* Desktop Nav Links */}
+          
           <div className="hidden sm:flex sm:items-center sm:gap-6">
             {menuItems.map((item, index) => (
               <motion.div key={index} whileHover={{ y: -1 }}>
@@ -94,7 +96,7 @@ const Navbar = () => {
 
           {/* Upgrade / Pricing Button */}
           <div>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+            {user ? <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/plans"
                 className="text-xs font-bold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 px-3 py-2 rounded-[20px] shadow-lg shadow-indigo-500/10 transition-all tracking-wide uppercase inline-block"
@@ -102,6 +104,9 @@ const Navbar = () => {
                 {isLoading ? "Checking Plan..." : isFreePlan ? "Upgrade To Pro" : "Premium Plan"}
               </Link>
             </motion.div>
+            : 
+            ""}
+            
           </div>
 
           {/* Right Side Actions: Auth Control / Loading Spinner */}
@@ -127,9 +132,9 @@ const Navbar = () => {
                   <Link href="/auth/signin" className="hidden sm:inline-block text-sm font-medium text-slate-300 hover:text-violet-400 transition-colors">
                     Login
                   </Link>
-                  <Button as={Link} href="/auth/signup" className="bg-violet-600 text-white font-medium hover:bg-violet-500 rounded-xl text-sm h-9 px-4 cursor-pointer">
+                  <Link href="/auth/signup" className=" flex items-center bg-violet-600 text-white font-medium hover:bg-violet-500 rounded-xl text-sm h-9 px-4 cursor-pointer">
                     Register
-                  </Button>
+                  </Link>
                 </motion.div>
               ) : (
                 <motion.div key="auth-in" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-4">

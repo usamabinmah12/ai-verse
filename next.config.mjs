@@ -8,7 +8,7 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.ibb.co',
         port: '',
-        pathname: '/**', // 💡 এর মানে i.ibb.co-এর অধীনে থাকা যেকোনো ইমেজ অ্যালাউড
+        pathname: '/**', 
       },
     ],
   },

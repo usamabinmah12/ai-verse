@@ -11,6 +11,7 @@ const AllPromtsPage = async ({searchParams}) => {
   // console
   console.log("all promts" , Allpromts);
   const totalPages = Allpromts.totalPage;
+  const page = Number(Allpromts.page); 
   console.log("Total" , totalPages);
   // const promts = Allpromts.data.filter(
   //                 (promt) => promt.status == "Approved");
@@ -62,6 +63,7 @@ const AllPromtsPage = async ({searchParams}) => {
           <>
             <PromptGrid promtsData={promts}
                         totalPages = {totalPages}
+                        page = {page}
                />
             {/* <PromptGrid promts = {promts}></PromptGrid> */}
           </>

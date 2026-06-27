@@ -19,7 +19,7 @@ const PricingPage = () => {
   const [billingTarget, setBillingTarget] = useState("user");
   // State to track opened accordion items in the FAQ section
   const [openFaq, setOpenFaq] = useState(null);
-
+  
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
