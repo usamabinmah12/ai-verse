@@ -11,7 +11,8 @@ const AdminDashboard = async() => {
     const review = await getReviews() || [];
     const reviewLen = review.length;
     
-    let promts = (await getPromt()) || [];
+    let promtsResponse = (await getPromt()) || [];
+    let promts = Array.isArray(promtsResponse) ? promtsResponse : (promtsResponse.data || []);
     // টোটাল সাবমিশন ও অ্যাপ্রুভড প্রম্পটের ডাটা আলাদা করা হলো অ্যানালিটিক্সের জন্য
     const totalPromptsCount = promts.length;
     const approvedPrompts = promts.filter((promt) => promt.status === "Approved");

@@ -11,7 +11,8 @@ const AdminCompaniesPage = async () => {
     let Promts = [];
     
     try {
-        Promts = await getPromt();
+        const res = await getPromt();
+        Promts = Array.isArray(res) ? res : (res?.data || []);
     } catch (error) {
         console.error("Failed to fetch Promts:", error);
         // Error handling interface deya bettor

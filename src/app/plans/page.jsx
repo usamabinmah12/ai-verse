@@ -11,6 +11,7 @@ import {
   Rocket,
   // Zap,
   Star,
+  LayoutCellsLarge,
 } from "@gravity-ui/icons";
 
 const PricingPage = () => {
@@ -26,79 +27,85 @@ const PricingPage = () => {
   // Organized Data Structuring based directly on your provided image & text parameters
   const userPlans = [
     {
-      name: "Free",
-      id: "user_free",
-      price: "$0",
-      period: "/forever",
-      description:
-        "Essential features for getting started and organizing your initial search tracking.",
-      icon: <Person className="w-5 h-5 text-zinc-400" />,
-      features: [
-        "Browse & save up to 10 jobs",
-        "Apply to up to 3 jobs per month",
-        "Basic profile page",
-        "Standard email alerts",
-      ],
-      cta: "Get Started",
-      popular: false,
+        name: "Free",
+        id: "user_free",
+        price: "$0",
+        period: "/forever",
+        description: "Essential features for discovering premium prompts and organizing your initial AI workflows.",
+        icon: <Person size={20} className="text-slate-400" />,
+        features: [
+            "Browse & save up to 10 prompts",
+            "Generate up to 3 AI items per month",
+            "Basic public creator profile",
+            "Standard community access",
+        ],
+        cta: "Get Started",
+        popular: false,
+        bg: "from-slate-500/5 to-transparent",
+        border: "border-slate-900"
     },
     {
-      name: "Pro",
-      id: "user_pro",
-      price: "$5",
-      period: "/month",
-      description:
-        "Our most popular option for serious active candidates looking to rapidly accelerate landing a role.",
-      icon: <Star className="w-5 h-5 text-blue-400" />,
-      features: [
-        "Apply to up to 30 jobs per month",
-        "Unlimited saved jobs",
-        "Advanced application tracking dashboard",
-        "Comprehensive salary insights",
-      ],
-      cta: "Upgrade to Pro",
-      popular: true,
+        name: "User Pro",
+        id: "user_pro",
+        price: "$5",
+        period: "/month",
+        description: "Our most popular option for serious power users looking to rapidly accelerate their creative output.",
+        icon: <Star size={20} className="text-violet-400" />,
+        features: [
+            "Unlimited saved prompts",
+            "Generate up to 30 items per month",
+            "Advanced application dashboard metrics",
+            "Comprehensive prompt performance insights",
+        ],
+        cta: "Upgrade to Pro",
+        popular: true,
+        bg: "from-violet-500/10 to-transparent",
+        border: "border-violet-500/30 shadow-violet-500/5"
     },
-    
-  ];
+];
 
-  const creatorPlans = [
+
+
+ const creatorPlans = [
     {
-      name: "Free",
+      name: "Creator Free",
       id: "creator_free",
       price: "$0",
       period: "/forever",
       description:
-        "Ideal baseline solution matching startups launching their initial hiring infrastructure pipeline.",
-      icon: <Briefcase className="w-5 h-5 text-zinc-400" />,
+        "Ideal baseline solution for new prompt engineers launching their initial creation portfolio.",
+      icon: <LayoutCellsLarge size={20} className="text-slate-400" />,
       features: [
-        "Up to 3 active job posts simultaneously",
-        "Basic applicant management pipeline",
-        "Standard organic listing search visibility",
-        "Great for a company’s first year of hiring",
+        "Host up to 3 active public prompts",
+        "Basic prompt performance metrics",
+        "Standard community visibility",
+        "Receive reviews and system ratings",
       ],
-      cta: "Start Free Posting",
+      cta: "Start Hosting Free",
       popular: false,
+      bg: "from-slate-500/5 to-transparent",
+      border: "border-slate-900"
     },
     {
-      name: "Pro",
+      name: "Creator Pro",
       id: "creator_pro",
       price: "$49",
       period: "/month",
       description:
-        "Expanded allocation built for expanding companies with active multi-departmental team tracks.",
-      icon: <Rocket className="w-5 h-5 text-blue-400" />,
+        "Expanded allocation built for professional prompt engineers with active multi-model text & image tracks.",
+      icon: <Rocket size={20} className="text-violet-400" />,
       features: [
-        "Up to 10 active job posts simultaneously",
-        "Full automated applicant tracking workflow",
-        "Basic listing performance metrics & analytics",
-        "Dedicated email support desk response",
+        "Unlimited active prompt listings",
+        "Full automated prompt version history control",
+        "Advanced listing traffic & keyword analytics",
+        "Featured placement on the public marketplace marketplace",
       ],
-      cta: "Scale Your Hiring",
+      cta: "Scale Your Creations",
       popular: true,
+      bg: "from-violet-500/10 to-transparent",
+      border: "border-violet-500/30 shadow-violet-500/5"
     },
-    
-  ];
+];
 
   const faqs = [
     {

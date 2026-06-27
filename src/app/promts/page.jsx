@@ -1,22 +1,31 @@
 import { getPromt } from "@/lib/api/promts";
 import { Sparkles } from "@gravity-ui/icons";
 import PromptGrid from "./PromptGrid";
-import MotionContainer from "./MotionContainer"; // 💡 নতুন তৈরি করা অ্যানিমেশন কন্টেনার
+import MotionContainer from "./MotionContainer"; 
 import { getUserSession } from "@/lib/core/session";
 
-const AllPromtsPage = async () => {
-  const Allpromts = (await getPromt()) || [];
-  const promts = Allpromts.filter((promt) => promt.status == "Approved");
-  // const user = await getUserSession();
-  // const copied  = user?.
+const AllPromtsPage = async ({searchParams}) => {
+  const params = await searchParams;
+  // console.log("page is : ", page)
+  const Allpromts = (await getPromt(params.page)) || [];
+  // console
+  console.log("all promts" , Allpromts);
+  const totalPages = Allpromts.totalPage;
+  console.log("Total" , totalPages);
+  // const promts = Allpromts.data.filter(
+  //                 (promt) => promt.status == "Approved");
+  const promts = Allpromts.data.filter(promt => promt.status === "Approved");
+  console.log("promts" , promts);
+
+  
    
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Ambient Background Mesh */}
+     
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] rounded-full bg-violet-600/10 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] rounded-full bg-indigo-500/5 blur-[100px] pointer-events-none" />
 
-      {/* 💡 মোশন কন্টেনার দিয়ে পুরো লেআউট র‍্যাপ করা হয়েছে */}
+      
       <MotionContainer className="max-w-7xl mx-auto relative z-10">
         
         {/* Header Section */}
@@ -51,7 +60,10 @@ const AllPromtsPage = async () => {
           </div>
         ) : (
           <>
-            <PromptGrid promts={promts} />
+            <PromptGrid promtsData={promts}
+                        totalPages = {totalPages}
+               />
+            {/* <PromptGrid promts = {promts}></PromptGrid> */}
           </>
         )}
       </MotionContainer>

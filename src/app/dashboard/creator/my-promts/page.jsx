@@ -4,7 +4,8 @@ import React from 'react';
 import PromtTable from './PromtTable';
 
 const MyPromt = async () => {
-    let promts = await getPromt() || [];
+    let promtsResponse = await getPromt() || [];
+    let promts = Array.isArray(promtsResponse) ? promtsResponse : (promtsResponse.data || []);
     const user = await getUserSession();
     const id = user?.id;
 
