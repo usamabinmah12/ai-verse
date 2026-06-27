@@ -14,6 +14,16 @@ export const getPromt = async (page) =>{
    
     return result;
 }
+export const GetAllPromt = async () =>{
+    // if(!page) {
+    //     page = 1;
+    // }
+    // const result = await serverFetch( `/api/promts?page=${page}`);
+    const result = await serverFetch('/api/promtsall');
+    // revalidatePath('/promts');
+   
+    return result;
+}
 export const getSubscriptions = async() => {
     return protectedFetch('/api/subscriptions');
 }

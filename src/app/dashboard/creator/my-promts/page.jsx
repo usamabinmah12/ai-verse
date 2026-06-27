@@ -1,18 +1,19 @@
-import { getPromt } from '@/lib/api/promts';
+import { GetAllPromt, getPromt } from '@/lib/api/promts';
 import { getUserSession } from '@/lib/core/session';
 import React from 'react';
 import PromtTable from './PromtTable';
 
 const MyPromt = async () => {
-    let promtsResponse = await getPromt() || [];
-    let promts = Array.isArray(promtsResponse) ? promtsResponse : (promtsResponse.data || []);
+    // let promtsResponse = await
+    // const Allpromts =  await getPromt(2) || [];
+    const Allpromts = await GetAllPromt();
     const user = await getUserSession();
     const id = user?.id;
 
     console.log('id is:', id);
 
-    // শুধুমাত্র বর্তমান user's prompts রাখবে
-    promts = promts.filter(promt => promt.promtId === id);
+    
+    const promts = Allpromts.filter(promt => promt.promtId === id);
 
     return (
         <div className="max-w-6xl mx-auto p-4 sm:p-8 my-6 text-slate-100">

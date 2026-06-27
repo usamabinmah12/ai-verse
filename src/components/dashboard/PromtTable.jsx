@@ -5,6 +5,7 @@ import { Table, Button, Badge } from '@heroui/react';
 // Assuming gravity-ui/icons are installed and imported like this
 import { CircleArrowDownFill } from '@gravity-ui/icons';
 import { updateStatus } from '@/lib/actions/update';
+import { toast } from 'react-toastify';
 // import { updateCompany } from '@/lib/actions/promts';
 
 const PromtTable = ({ promts }) => {
@@ -13,12 +14,14 @@ const PromtTable = ({ promts }) => {
         // const result = await updateCompany(id, { status: 'Approved' })
         const result = await updateStatus(id , {status: 'Approved'})
         if (result.modifiedCount) {
+            toast(`Approved PromptId is ${id}`);
             console.log(`Approved company with ID: ${id}`, result);
         }
     };
 
     const handleReject = async (id) => {
         const result = await updateStatus(id , {status: 'Rejected'})
+        toast(`Rejected PromptId is ${id}`);
         // const result = await updateCompany(id, { status: 'Rejected' })
     };
 

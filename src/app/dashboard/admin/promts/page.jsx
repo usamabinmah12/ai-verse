@@ -1,7 +1,7 @@
 import PromtTable from '@/components/dashboard/PromtTable';
 
 
-import { getPromt } from '@/lib/api/promts';
+import { GetAllPromt, getPromt } from '@/lib/api/promts';
 import React from 'react';
 
 // Next.js re koia deya holo je eita dynamically render oibo, cache thaki purana data dekaito na
@@ -11,7 +11,7 @@ const AdminCompaniesPage = async () => {
     let Promts = [];
     
     try {
-        const res = await getPromt();
+        const res = await GetAllPromt();
         Promts = Array.isArray(res) ? res : (res?.data || []);
     } catch (error) {
         console.error("Failed to fetch Promts:", error);
