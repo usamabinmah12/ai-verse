@@ -18,7 +18,7 @@ const AllPromtsPage = async ({searchParams}) => {
   const promts = Allpromts.data.filter(promt => promt.status === "Approved");
   console.log("promts" , promts);
 
-  
+  const user = await getUserSession();
    
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -64,6 +64,7 @@ const AllPromtsPage = async ({searchParams}) => {
             <PromptGrid promtsData={promts}
                         totalPages = {totalPages}
                         page = {page}
+                        user = {user}
                />
             {/* <PromptGrid promts = {promts}></PromptGrid> */}
           </>

@@ -5,7 +5,7 @@ import { Table, Card, Button, Chip, Input, Pagination, Spinner } from "@heroui/r
 import { Copy, Check, Layers, ArrowRight, Magnifier } from "@gravity-ui/icons";
 import Link from "next/link";
 
-export default function PromptGrid({ promtsData, totalPages, page, isLoading = false }) {
+export default function PromptGrid({ promtsData, totalPages, page , user, isLoading = false }) {
   const [copiedId, setCopiedId] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTool, setSelectedTool] = useState("All");
@@ -189,8 +189,8 @@ export default function PromptGrid({ promtsData, totalPages, page, isLoading = f
                         {item.category || "Uncategorized"}
                       </span>
                     </div>
-
-                    <Link
+                      {
+                        user? <Link
                       href={`/promts/${item._id || "details"}`}
                      
                     >
@@ -202,7 +202,24 @@ export default function PromptGrid({ promtsData, totalPages, page, isLoading = f
                       >
                         See Details <ArrowRight className="size-3" />
                       </Button>
-                    </Link>
+                    </Link> : <>
+                    
+                        <Link
+                      href={`/auth/signin`}
+                     
+                    >
+                      <Button
+                        as="a"
+                        size="sm"
+                        variant="solid"
+                        className="rounded-xl h-8 px-4 text-xs font-bold tracking-wide shadow-md bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white flex items-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        See Details <ArrowRight className="size-3" />
+                      </Button>
+                    </Link> 
+                    </>
+                      }
+                    
                   </div>
                 </Card>
               );

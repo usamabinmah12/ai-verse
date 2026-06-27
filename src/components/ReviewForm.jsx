@@ -2,6 +2,7 @@
 
 import { createReview } from '@/lib/api/review';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const ReviewForm = ({userId , promptId}) => {
     console.log("Id is : ", userId)
@@ -17,6 +18,7 @@ const ReviewForm = ({userId , promptId}) => {
         };
         console.log("review data" , reviewData);
         await createReview(reviewData , promptId);
+        toast("Your Review added to Review section");
 
     };
 

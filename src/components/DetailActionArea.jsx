@@ -6,26 +6,27 @@ import { Copy, Check } from '@gravity-ui/icons';
 import { updateCopy } from '@/lib/actions/update';
 import { router } from 'better-auth/api';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 
 export default function DetailActionArea({isPremiumUser, promptText, promptId }) {
     const [copied, setCopied] = useState(false);
     
     const handleCopy = async () => {
     try {
-        // ১. ইউজারের ক্লিপবোর্ডে প্রম্পট টেক্সট কপি করা
+      
         await navigator.clipboard.writeText(promptText);
         setCopied(true);
         
-        // ২. ২ সেকেন্ড পর "Copied!" স্টেট রিসেট করা
+      
         setTimeout(() => setCopied(false), 2000);
         
         console.log("Prompt id is:", promptId);
         
-        // ৩. আপনার সার্ভার অ্যাকশন কল করে ডাটাবেজে copyCount ১ বাড়িয়ে নেওয়া
+        
         const response = await updateCopy(promptId);
         
         if (response?.success) {
-            // ৪. ডাটাবেজ আপডেট হলে কোনো ফুল-পেজ রিলোড ছাড়াই নতুন কাউন্ট স্ক্রিনে দেখাবে
+            toast("Copied to Clipeboard")
             router.refresh(); 
         }
 
