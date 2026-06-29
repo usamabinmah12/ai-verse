@@ -28,7 +28,7 @@ const Banner = () => {
     setSearchQuery(tag);
   };
 
-  // 📝 অ্যানিমেশন ভেরিয়েন্টস (Clean Code-এর জন্য)
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -56,7 +56,7 @@ const Banner = () => {
   });
 
   return (
-    // 💡 section-কে motion.section করা হয়েছে
+  
     <motion.section 
       initial="hidden"
       animate="visible"
@@ -87,9 +87,9 @@ const Banner = () => {
           {/* Heading Typographic Stack */}
           <div className="space-y-4">
             <motion.h1 variants={itemVariants} className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight">
-              Unlock the True Potential of{" "}
+              Maximize Your Output{" "}
               <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent">
-                Generative AI
+                Master Generative AI
               </span>
             </motion.h1>
             <motion.p variants={itemVariants} className="text-base sm:text-lg text-slate-400 max-w-xl font-normal leading-relaxed">
